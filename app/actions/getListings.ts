@@ -1,4 +1,7 @@
 import prisma from '@/app/libs/prismadb';
+import type { SafeListing } from '@/app/types';
+
+type ListingItem = Awaited<ReturnType<typeof prisma.listing.findMany>>[number];
 
 export interface IListingParams {
   userId?: string;
@@ -11,7 +14,7 @@ export interface IListingParams {
   category?: string;
 }
 
-export default async function getListings(params: IListingParams) {
+export default async function getListings(params: IListingParams): Promise<SafeListing[]> {
   try {
     const {
       userId,
@@ -76,7 +79,7 @@ export default async function getListings(params: IListingParams) {
       },
     });
 
-    const safeListings = listings.map((listing) => ({
+    const safeListings = listings.map((listing: ListingItem) => ({
       ...listing,
       createdAt: listing.createdAt.toISOString(),
     }));

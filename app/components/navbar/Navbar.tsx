@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { Container } from '../Container';
 import { Categories } from './Categories';
 import { Logo } from './Logo';
@@ -18,12 +19,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
         <Container>
           <div className='flex flex-row items-center justify-between gap-3 md:gap-0'>
             <Logo />
-            <Search />
+            <Suspense fallback={null}>
+              <Search />
+            </Suspense>
             <UserMenu currentUser={currentUser} />
           </div>
         </Container>
       </div>
-      <Categories />
+      <Suspense fallback={null}>
+        <Categories />
+      </Suspense>
     </div>
   );
 };

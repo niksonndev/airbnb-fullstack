@@ -7,6 +7,7 @@ import { LoginModal } from './components/modals/LoginModal';
 import getCurrentUser from './actions/getCurrentUser';
 import { RentModal } from './components/modals/RentModal';
 import SearchModal from './components/modals/SearchModal';
+import { Suspense } from 'react';
 
 const font = Nunito({ subsets: ['latin'] });
 
@@ -14,6 +15,8 @@ export const metadata = {
   title: 'Airbnb',
   description: 'Airbnb clone',
 };
+
+export const dynamic = 'force-dynamic';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const currentUser = await getCurrentUser();
@@ -26,7 +29,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <RentModal />
         <LoginModal />
         <RegisterModal />
-        <Navbar currentUser={currentUser} />
+        <Suspense fallback={null}>
+          <Navbar currentUser={currentUser} />
+        </Suspense>
         <div className='pb-20 pt-28'>{children}</div>
       </body>
     </html>

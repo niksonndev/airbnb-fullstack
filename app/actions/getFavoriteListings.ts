@@ -2,6 +2,8 @@ import prisma from '@/app/libs/prismadb';
 
 import getCurrentUser from './getCurrentUser';
 
+type ListingItem = Awaited<ReturnType<typeof prisma.listing.findMany>>[number];
+
 export default async function getFavoriteListings() {
   try {
     const currentUser = await getCurrentUser();
@@ -18,7 +20,7 @@ export default async function getFavoriteListings() {
       },
     });
 
-    const safeFavorites = favorites.map((favorite) => ({
+    const safeFavorites = favorites.map((favorite: ListingItem) => ({
       ...favorite,
       createdAt: favorite.createdAt.toISOString(),
     }));
